@@ -8,6 +8,15 @@ const client = new pg.Client({
   database : settings.database,
 });
 
+function logSearches(result) {
+  let matches = result.rows.length
+    console.log('Searching ...');
+    console.log(`Found ${matches} person(s) by the name ${searchFor}:`);
+    for (let i = 0; i < matches; i++) {
+      console.log(`- ${i + 1}: ${result.rows[i].first_name} ${result.rows[i].last_name}, born ${String(result.rows[i].birthdate).slice(0, 15)}`);
+    }
+}
+
 client.connect((err) => {
   if (err) {
     return console.error('Connection Error', err);
@@ -16,12 +25,7 @@ client.connect((err) => {
     if (err) {
       return console.error("error running query", err);
     }
-    let matches = result.rows.length
-    console.log('Searching ...');
-    console.log(`Found ${matches} person(s) by the name ${searchFor}:`);
-    for (let i = 0; i < matches; i++) {
-      console.log(`- ${i + 1}: ${result.rows[i].first_name} ${result.rows[i].last_name}, born ${String(result.rows[i].birthdate).slice(0, 15)}`);
-    }
+    logSearches(result);
     client.end();
   });
 });
