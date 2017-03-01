@@ -21,8 +21,8 @@ function logSearches(result) {
 
 knex.select('*')
 .from('famous_people')
-.where('first_name', '=', searchFor)
-.orWhere('last_name', '=', searchFor)
+.where('first_name', searchFor)
+.orWhere('last_name', searchFor)
 .asCallback((err, result) => {
   if (err) return console.error(err);
   logSearches(result);
